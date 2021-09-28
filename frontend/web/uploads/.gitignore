@@ -1,0 +1,8 @@
+*
+!.gitignore
+!no_image.png
+!files
+!thumbs
+thumbs/*
+files/*
+!*.png

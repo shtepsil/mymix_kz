@@ -1,0 +1,116 @@
+Кнопка "Подтвердить возврат" запускает action:
+backend\modules\catalog\controllers\OrdersController->actionRollbackPay($id)
+
+=================================================
+
+После нажатия на красную кнопку "Возврат" попадаем на страницу,
+на которой есть зелёная кнопка "Отправить",
+эта кнопка запускает OrdersController->actionRollbackItems($id)
+где $id это ID заказа (orders->id)
+
+================================================
+
+В общем нужно устанавливать статус заказа либо вот тут:
+Кнопка "Отправить",
+backend\modules\catalog\controllers\OrdersController.php 788
+OrdersController->actionRollbackItems($id)
+закоментировав условие
+if ($main->type == 0) else
+
+
+Либо по кнопке вот тут:
+OrdersController->actionRollbackPay($id) 1153
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

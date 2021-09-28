@@ -1,0 +1,85 @@
+<IfModule mod_rewrite.c>
+		Options +FollowSymlinks
+	    RewriteEngine On
+	    #универсальный редирект с test.kz на www.test.kz
+#        RewriteCond %{HTTP_HOST} ^([^www\.][^\/]*)	[NC]
+#        RewriteRule ^(.*)$ http://www.%1/$1	[R=301,L]
+		#универсальный редирект с www.test.kz на test.kz
+		RewriteCond %{HTTP_HOST} ^www\.(.*)	[NC]
+        RewriteRule ^(.*)$ http://%1/$1	[R=301,L]
+</IfModule>
+
+<IfVersion >= 2.4>
+<IfModule mod_rewrite.c>
+		RewriteCond %{REQUEST_URI} ^/
+	    RewriteCond %{REQUEST_URI} !^/(instel)
+	    RewriteCond %{REQUEST_URI} !index.php
+		RewriteCond %{DOCUMENT_ROOT}/frontend/web%{REQUEST_URI} -f [OR]
+        RewriteCond %{DOCUMENT_ROOT}/frontend/web%{REQUEST_URI} -d
+        RewriteRule ^(.*)$ frontend/web/$1 [END]
+
+	    # deal with admin first
+	    RewriteCond %{REQUEST_URI} ^/(instel)
+	    RewriteRule ^instel/assets/(.*)$ backend/web/assets/$1 [END]
+	    RewriteRule ^instel/css/(.*)$ backend/web/css/$1 [END]
+	    RewriteRule ^instel/images/(.*)$ backend/web/images/$1 [END]
+
+	    RewriteCond %{REQUEST_URI} !^/backend/web/(assets|css|images)/
+	    RewriteCond %{REQUEST_URI} ^/(instel)
+	    RewriteRule ^.*$ backend/web/index.php [END]
+
+	    RewriteCond %{REQUEST_URI} ^/(assets|css|images|img|uploads|makeup)
+	    RewriteRule ^assets/(.*)$ frontend/web/assets/$1 [END]
+	    RewriteRule ^css/(.*)$ frontend/web/css/$1 [END]
+	    RewriteRule ^images/(.*)$ frontend/web/images/$1 [END]
+	    RewriteRule ^img/(.*)$ frontend/web/img/$1 [END]
+	    RewriteRule ^uploads/(.*)$ frontend/web/uploads/$1 [END]
+	    RewriteRule ^makeup/(.*)$ makeup/$1 [END]
+		RewriteRule ^.well-known/(.*)$ .well-known/$1 [END]
+
+	    RewriteCond %{REQUEST_URI} !^/(frontend|backend)/web/(assets|css|images|img|uploads|makeup)/
+	    RewriteCond %{REQUEST_URI} !index.php
+	    RewriteCond %{REQUEST_FILENAME} !-f [OR]
+	    RewriteCond %{REQUEST_FILENAME} !-d
+	    RewriteRule ^.*$ frontend/web/index.php
+
+	    RewriteCond %{REQUEST_URI} ^/backend
+	    RewriteRule ^ - [R=404,L]
+	</IfModule>
+</IfVersion>
+<IfVersion < 2.4>
+	<IfModule mod_rewrite.c>
+	    #для apache 2.2 вместо флага [END]
+	    RewriteCond %{ENV:REDIRECT_STATUS} 200
+	    RewriteRule ^ - [L]
+
+	    # deal with admin first
+	    RewriteCond %{REQUEST_URI} ^/(instel)
+	    RewriteRule ^instel/assets/(.*)$ backend/web/assets/$1 [L]
+	    RewriteRule ^instel/css/(.*)$ backend/web/css/$1 [L]
+	    RewriteRule ^instel/images/(.*)$ backend/web/images/$1 [L]
+
+	    RewriteCond %{REQUEST_URI} !^/backend/web/(assets|css|images)/
+	    RewriteCond %{REQUEST_URI} ^/(instel)
+	    RewriteRule ^.*$ backend/web/index.php [L]
+
+	    RewriteCond %{REQUEST_URI} ^/(assets|css|images|img|uploads|makeup)
+	    RewriteRule ^assets/(.*)$ frontend/web/assets/$1 [L]
+	    RewriteRule ^css/(.*)$ frontend/web/css/$1 [L]
+	    RewriteRule ^images/(.*)$ frontend/web/images/$1 [L]
+	    RewriteRule ^img/(.*)$ frontend/web/img/$1 [L]
+	    RewriteRule ^uploads/(.*)$ frontend/web/uploads/$1 [L]
+	    RewriteRule ^makeup/(.*)$ makeup/$1 [L]
+		RewriteRule ^.well-known/(.*)$ .well-known/$1 [END]
+
+	    RewriteCond %{REQUEST_URI} !^/(frontend|backend)/web/(assets|css|images|img|uploads|makeup)/
+	    RewriteCond %{REQUEST_URI} !index.php
+	    RewriteCond %{REQUEST_FILENAME} !-f [OR]
+	    RewriteCond %{REQUEST_FILENAME} !-d
+	    RewriteRule ^.*$ frontend/web/index.php
+
+	    RewriteCond %{REQUEST_URI} ^/backend
+	    RewriteRule ^ - [R=404,L]
+	</IfModule>
+</IfVersion>
+
