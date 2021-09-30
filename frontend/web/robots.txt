@@ -1,5 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://mymix.kz/sitemap.xml
-HOST: https://mymix.kz/
